@@ -4,41 +4,41 @@ import os
 
 def remove_watermark(image_path, output_path, low_threshold=150, high_threshold=255):
     """
-    Remove marcas d'água de imagens utilizando a técnica de Inpainting do OpenCV.
+    Removes watermarks from images using OpenCV's Inpainting technique.
     
-    :param image_path: Caminho da imagem original.
-    :param output_path: Caminho onde a imagem processada será salva.
-    :param low_threshold: Limiar inferior para detecção de tons claros/brancos da marca.
-    :param high_threshold: Limiar superior para a máscara.
+    :param image_path: Path to the original image.
+    :param output_path: Path where the processed image will be saved.
+    :param low_threshold: Lower threshold for detecting bright/white watermark pixels.
+    :param high_threshold: Upper threshold for the binary mask.
     """
     if not os.path.exists(image_path):
-        print(f"Erro: O arquivo {image_path} não foi encontrado.")
+        print(f"Error: The file {image_path} was not found.")
         return
 
-    # 1. Carrega a imagem original
+    # 1. Load the original image
     img = cv2.imread(image_path)
 
-    # 2. Converte para escala de cinza para facilitar a detecção de formas/textos
+    # 2. Convert to grayscale to easily detect shapes/text
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # 3. Cria uma máscara binária (detecta pixels claros que geralmente formam marcas d'água)
-    # Ajuste os thresholds se a marca d'água for escura ou colorida
+    # 3. Create a binary mask (detects bright pixels which usually form watermarks)
+    # Adjust thresholds if the watermark is dark or colored
     _, mask = cv2.threshold(gray, low_threshold, high_threshold, cv2.THRESH_BINARY)
 
-    # 4. Aplica o algoritmo de Inpainting para preencher a área da máscara
-    # cv2.INPAINT_TELEA é ideal para restauração rápida e remoção de ruídos textuais
+    # 4. Apply Inpainting algorithm to fill the masked area
+    # cv2.INPAINT_TELEA is ideal for fast restoration and textual noise removal
     result = cv2.inpaint(img, mask, inpaintRadius=7, flags=cv2.INPAINT_TELEA)
 
-    # 5. Salva o resultado final
+    # 5. Save the final result
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     cv2.imwrite(output_path, result)
-    print(f"Sucesso! Imagem sem marca d'água salva em: {output_path}")
+    print(f"Success! Watermark-free image saved to: {output_path}")
 
 if __name__ == "__main__":
-    # Exemplo de uso local
-    # Certifique-se de criar uma pasta 'input' com uma imagem dentro para testar
-    INPUT_IMAGE = "input/imagem_com_marca.jpg"
-    OUTPUT_IMAGE = "output/imagem_limpa.jpg"
+    # Local usage example
+    # Make sure to create an 'input' folder with an image inside to test
+    INPUT_IMAGE = "input/watermarked_image.jpg"
+    OUTPUT_IMAGE = "output/cleaned_image.jpg"
     
-    print("Iniciando a remoção da marca d'água...")
+    print("Starting watermark removal process...")
     remove_watermark(INPUT_IMAGE, OUTPUT_IMAGE)
