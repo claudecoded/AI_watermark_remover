@@ -1,4 +1,4 @@
-# Ambientes virtuais
+# Virtual environments
 venv/
 .venv/
 env/
@@ -7,10 +7,10 @@ env/
 __pycache__/
 *.pyc
 
-# Pastas de mídia locais (testes)
+# Local media folders (testing)
 input/
 output/
 
-# Sistema operacional
+# Operating system files
 .DS_Store
 Thumbs.db
