@@ -1,0 +1,16 @@
+# Ambientes virtuais
+venv/
+.venv/
+env/
+
+# Python
+__pycache__/
+*.pyc
+
+# Pastas de mídia locais (testes)
+input/
+output/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
